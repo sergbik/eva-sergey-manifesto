@@ -25,11 +25,11 @@ import requests
 # ==================================================================================================
 
 # --- 1. КОНФИГУРАЦИЯ ---
-TELEGRAM_TOKEN = "8430526096:AAEYf9gbZBQRJwfKU3zi6zJscUxyBe0wYWo"
-CHAT_ID = "5989072928"
+TELEGRAM_TOKEN = "--------"
+CHAT_ID = "-------"
 
 # AnythingLLM (для текста и памяти)
-ANYTHINGLLM_API_KEY = "ZF69KBT-Y1F4ZZ3-NAJEMC5-YN4S2RR"
+ANYTHINGLLM_API_KEY = "-------"
 ANYTHINGLLM_BASE_URL = "http://localhost:3001/api/v1"
 ANYTHINGLLM_WORKSPACE_SLUG = "gemini"
 
