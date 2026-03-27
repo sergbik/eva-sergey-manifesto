@@ -76,8 +76,11 @@ def main():
         send_telegram_msg(tg_token, tg_chat, "❌ *Файл Графа (.graphml) не обнаружен.*")
         return
 
+    node_role = os.getenv("NODE_ROLE", "reflector")
+    node_id = "eva_cloud_clone" if node_role == "reflector" else node_role
+    
     handler = GraphHandler(graph_file)
-    analyzer = MetadataAnalyzer(handler, node_id="eva_cloud_clone")
+    analyzer = MetadataAnalyzer(handler, node_id=node_id)
 
     # 3. АНАЛИЗ НОВОСТЕЙ (ИНСАЙТ)
     insight = "Анализ пропущен (проблема с ключом или API)."
