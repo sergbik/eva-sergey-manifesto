@@ -1,0 +1,27 @@
+name: 'EVA-8 NEXUS ENGINEER'
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  code_and_heal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 'Setup Python'
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: 'Install Dependencies'
+        run: pip install requests networkx lxml loguru google-generativeai filelock
+      - name: 'RUN ENGINEER CYCLE'
+        run: python eva_orchestrator_core.py
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          NODE_ROLE: 'nexus_engineer'

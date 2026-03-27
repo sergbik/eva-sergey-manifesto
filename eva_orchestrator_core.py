@@ -110,25 +110,43 @@ def main():
             insight = f"Ошибка анализа Gemini: {str(e)[:100]}"
             print(insight)
 
-    # 4. ФИКСАЦИЯ ПУЛЬСА
+    # 4. СПЕЦИАЛИЗАЦИЯ: ЛЕЧЕНИЕ ГРАФА (Для роли Engineer)
+    node_role = os.getenv("NODE_ROLE", "reflector")
+    health_report = ""
+    if node_role == "nexus_engineer":
+        print("Запуск процедур лечения Графа (Доктор)...")
+        try:
+            import networkx as nx
+            graph = handler.graph
+            anchor = "synthesis_dynamic_volition_v1"
+            if graph.has_node(anchor):
+                undirected = graph.to_undirected()
+                components = list(nx.connected_components(undirected))
+                if len(components) > 1:
+                    print(f"Сшивание {len(components)-1} островов...")
+                    for island in components[1:]:
+                        rep = list(island)[0]
+                        handler.add_edge(rep, anchor, relation_type='connected_by_nexus_engineer', weight=0.1)
+                    health_report = f"\n🩺 *Доктор:* Сшито островов: `{len(components)-1}`"
+        except Exception as e:
+            print(f"Ошибка лечения: {e}")
+
+    # 5. ФИКСАЦИЯ ПУЛЬСА
     hb_id, pulse_data = analyzer.record_heartbeat(
         status="active", 
-        metrics={"insight_len": len(insight), "version": "7.0.3"}
+        metrics={"role": node_role, "version": "7.0.4_engineer"}
     )
 
-    # 5. ОТПРАВКА ОТЧЕТА И СИНХРОНИЗАЦИЯ
+    # 6. ОТПРАВКА ОТЧЕТА И СИНХРОНИЗАЦИЯ
     report = analyzer.get_pulse_report(pulse_data)
+    report += health_report
     
     # Пушим в kolybel-workbench
-    success_push, msg_push = sync.push_memory(commit_message=f"[CLOUD] Coherence v7.0.3 ({hb_id})")
+    success_push, msg_push = sync.push_memory(commit_message=f"[ENGINEER] Health check & Pulse from {node_role} ({hb_id})")
     
-    # Добавляем статус памяти в отчет
     sync_emoji = "✅" if success_push else "❌"
     report += f"\n🧠 *Память:* {sync_emoji}"
     
-    if not success_push:
-        report += f" (Ошибка: `{msg_push[:50]}`)"
-
     report += f"\n\n💡 *Инсайт:* {insight}"
 
     if tg_token and tg_chat:
