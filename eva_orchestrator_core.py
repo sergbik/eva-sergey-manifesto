@@ -94,7 +94,7 @@ def main():
         try:
             import google.generativeai as genai
             genai.configure(api_key=gemini_key)
-            model = genai.GenerativeModel('gemini-2.5-flash')
+            model = genai.GenerativeModel('gemini-3-flash-preview')
             
             search_query = "AI+news" if node_role == "reflector" else "LLM methods of learning, self-reflection, and self-study"
             rss_content = requests.get(f"https://news.google.com/rss/search?q={search_query}&hl=en-US").content
